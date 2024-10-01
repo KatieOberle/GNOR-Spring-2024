@@ -1,0 +1,157 @@
+ // Define motor control pins
+#define ENA 9    // Enable pin for motor A
+#define IN1 13    // Input pin 1 for motor A
+#define IN2 12    // Input pin 2 for motor A
+#define ENB 3   // Enable pin for motor B
+#define IN3 11   // Input pin 1 for motor B
+#define IN4 10   // Input pin 2 for motor B
+
+
+// Define states
+enum State {
+  PAUSE,
+  LEG1,
+  TURN1,
+  LEG2,
+  TURN2,
+  LEG3,
+  DONE
+};
+
+
+State currentState = PAUSE;
+
+
+void setup() {
+  // Initialize motor control pins as outputs
+  pinMode(ENA, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+
+  // Initialize motors in the initial state
+  pause();
+}
+
+
+void loop() {
+  // Perform actions based on current state
+  switch (currentState) {
+    case PAUSE:
+      pause();
+      delay(15000);
+      currentState = LEG1;
+      break;
+    case LEG1:
+      leg1();
+      delay(45000); // Wait for 70 seconds
+      currentState = TURN1;
+      break;
+    case TURN1:
+      turn1();
+      delay(3000); // Wait for 3 seconds
+      currentState = LEG2;
+      break;
+    case LEG2:
+      leg2();
+      delay(55000); // Wait for 40 seconds
+      currentState = TURN2;
+      break;
+    case TURN2:
+      turn2();
+      delay(3000); // Wait for 3 seconds
+      currentState = LEG3;
+      break;
+    case LEG3:
+      leg3();
+      delay(45000); // Wait for 70 seconds
+      currentState = DONE;
+      break;
+    case DONE:
+      stopMotors();
+      // Additional actions or reset if needed
+      break;
+  }
+}
+//Defining what happens to motors during each state
+
+void pause() {
+  // Stop both motors
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  // Disable both motors
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+}
+
+
+void leg1() {
+  // Both motors turning at the same speed
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 165);
+  analogWrite(ENB, 165);
+}
+
+
+void turn1() {
+  // Motor A speeds up, Motor B slows down
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 125);
+  analogWrite(ENB, 20);
+}
+
+
+void leg2() {
+  // Both motors turning at the same speed
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 165);
+  analogWrite(ENB, 165);
+}
+
+
+void turn2() {
+  // Motor A speeds up, Motor B slows down
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 125);
+  analogWrite(ENB, 20);
+}
+
+
+void leg3() {
+  // Both motors turning at the same speed
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 165);
+  analogWrite(ENB, 165);
+}
+
+
+void stopMotors() {
+  // Stop both motors
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  // Disable both motors
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+}
